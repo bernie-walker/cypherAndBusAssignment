@@ -20,21 +20,21 @@ public class CustomCaesarCypher {
 
     private static char decodeCharacter(char character, int shift) {
 
-        if (AlphaNumeric.isUpperCase(character)) {
-            return getOriginalCharacter(character, shift, AlphaNumeric::transformUppercase, AlphaNumeric.TOTAL_ALPHABETS);
+        if (character >= 65 && character <= 90) {
+            return getOriginalCharacter(character, shift, 65, 26);
         }
 
-        if (AlphaNumeric.isLowerCase(character)) {
-            return getOriginalCharacter(character, shift, AlphaNumeric::transformLowercase, AlphaNumeric.TOTAL_ALPHABETS);
+        if (character >= 97 && character <= 122) {
+            return getOriginalCharacter(character, shift, 97, 26);
         }
 
-        return getOriginalCharacter(character, shift, AlphaNumeric::transformNumeric, AlphaNumeric.TOTAL_NUMBERS);
+        return getOriginalCharacter(character, shift, 48, 10);
     }
 
-    private static char getOriginalCharacter(char character, int shift, AlphanumericTransformer transformer, int totalCharsInGroup) {
-        int characterPosition = transformer.transform(character, false);
+    private static char getOriginalCharacter(char character, int shift, int lowestCharCodeInCharGroup, int totalCharsInGroup) {
+        int characterPosition = character - lowestCharCodeInCharGroup;
         int originalPosition = modulo((characterPosition - shift), totalCharsInGroup);
-        return (char) transformer.transform(originalPosition, true);
+        return (char) (originalPosition + lowestCharCodeInCharGroup);
     }
 
     private static int modulo(int num, int mod) {
@@ -42,37 +42,3 @@ public class CustomCaesarCypher {
         return result < 0 ? mod + result : result;
     }
 }
-
-class AlphaNumeric {
-
-    public static final int A = 65, Z = 90, a = 97, z = 122, ZERO = 48, TOTAL_ALPHABETS = 26, TOTAL_NUMBERS = 10;
-
-    public static boolean isUpperCase(char character) {
-        return isInRange(character, A, Z);
-    }
-
-    public static boolean isLowerCase(char character) {
-        return isInRange(character, a, z);
-    }
-
-    private static boolean isInRange(int num, int lowerLimit, int upperLimit) {
-        return Math.min(Math.max(num, lowerLimit), upperLimit) == num;
-    }
-
-    public static int transformUppercase(int value, boolean isValuePosition) {
-        return isValuePosition ? value + A : value - A;
-    }
-
-    public static int transformLowercase(int value, boolean isValuePosition) {
-        return isValuePosition ? value + a : value - a;
-    }
-
-    public static int transformNumeric(int value, boolean isValuePosition) {
-        return isValuePosition ? value + ZERO : value - ZERO;
-    }
-}
-
-interface AlphanumericTransformer {
-    int transform(int value, boolean isValuePosition);
-}
-
