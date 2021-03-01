@@ -1,4 +1,5 @@
-import com.sun.tools.corba.se.idl.InvalidArgument;
+package com.tcs;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -7,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class CustomCaesarCypherTest {
 
     @Test
-    void shouldDecryptUpperCaseMessage() throws InvalidArgument {
+    void shouldDecryptUpperCaseMessage(){
         String cipherText = "Cqrb rb j CNBC vnbbjpn948";
 
         String expectedMessage = "This is a TEST message059";
@@ -18,7 +19,7 @@ class CustomCaesarCypherTest {
 
     @Test
     void shouldThrowAnErrorWhenKeyIsInvalid() {
-        assertThrows(InvalidArgument.class, () -> CustomCaesarCypher.decrypt("", 0));
+        assertThrows(IllegalArgumentException.class, () -> CustomCaesarCypher.decrypt("", 0));
     }
 
 }

@@ -1,16 +1,16 @@
-import com.sun.tools.corba.se.idl.InvalidArgument;
+package com.tcs;
 
 public class CustomCaesarCypher {
 
-    public static String decrypt(String cipherText, int key) throws InvalidArgument {
+    public static String decrypt(String cypherText, int key) {
 
         if (key <= 0) {
-            throw new InvalidArgument("Value of key must be greater that 0");
+            throw new IllegalArgumentException("Value of key must be greater that 0");
         }
 
         StringBuilder decodedMessage = new StringBuilder();
 
-        for (char character : cipherText.toCharArray()) {
+        for (char character : cypherText.toCharArray()) {
             char decodedCharacter = character == ' ' ? character : decodeCharacter(character, key);
             decodedMessage.append(decodedCharacter);
         }
